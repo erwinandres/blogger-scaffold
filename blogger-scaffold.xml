@@ -5,7 +5,8 @@
 
   <b:include data='blog' name='all-head-content'/>
   <title><data:blog.pageTitle/></title>
-    <b:skin><![CDATA[/* ]]></b:skin>
+
+    <b:skin><![CDATA[*/ ]]></b:skin>
 
   </head>
 <body>
@@ -101,9 +102,6 @@
         </b:if>
         <b:if cond='data:post.isDateStart'>
           &lt;div class=&quot;date-outer&quot;&gt;
-        </b:if>
-        <b:if cond='data:post.dateHeader'>
-          <h2 class='date-header'><span><data:post.dateHeader/></span></h2>
         </b:if>
         <b:if cond='data:post.isDateStart'>
           &lt;div class=&quot;date-posts&quot;&gt;
@@ -595,7 +593,8 @@
     <div class='post-header'>
     <b:if cond='data:post.title'>
      <a expr:href='data:post.url'>
-      <h3 class='post-title entry-title'>
+  <b:if cond='data:blog.pageType == &quot;index&quot;'><!-- Mostrar titulo en h2 en el index y en h1 en páginas internas -->
+      <h2 class='post-title entry-title'>
         <b:if cond='data:post.link'>
           <data:post.title/>
         <b:else/>
@@ -609,57 +608,81 @@
           <data:post.title/>
         </b:if>
       </b:if>
-      </h3>
-     <b:if cond='data:blog.pageType == &quot;index&quot;'>
-       <span class='jump-link'>
-         <data:post.jumpText/>
-       </span>
-     </b:if>
+      </h2>
+      <b:else/>
+    <h1 class='post-title entry-title'>
+        <b:if cond='data:post.link'>
+          <data:post.title/>
+        <b:else/>
+        <b:if cond='data:post.url'>
+          <b:if cond='data:blog.url != data:post.url'>
+            <data:post.title/>
+          <b:else/>
+            <data:post.title/>
+          </b:if>
+        <b:else/>
+          <data:post.title/>
+        </b:if>
+      </b:if>
+      </h1>
+    </b:if>
      </a>
     </b:if>
 
     <div class='post-header-line-1'>
-      <span class='post-author vcard'>
-          <data:top.authorLabel/>
-            <b:if cond='data:post.authorProfileUrl'>
-              <span class='fn'>
-                <a expr:href='data:post.authorProfileUrl' rel='author' title='author profile'>
-                  <data:post.author/>
-                </a>
+      <!-- Autor del Post-->
+              <span class='post-author vcard'>
+                <b:if cond='data:top.showAuthor'>
+                <data:top.authorLabel/>
+                  <b:if cond='data:post.authorProfileUrl'>
+                    <span class='fn'>
+                      <a expr:href='data:post.authorProfileUrl' rel='author' title='author profile'>
+                        <data:post.author/>
+                      </a>
+                    </span>
+                  <b:else/>
+                    <span class='fn'><data:post.author/></span>
+                  </b:if>
+                </b:if>
               </span>
-            <b:else/>
-              <span class='fn'><data:post.author/></span>
-            </b:if>
+           <!-- FIN Autor del Post-->
+
+       <span class='post-labels'>
+        <b:if cond='data:post.labels'>
+          <data:postLabelsLabel/>
+          <b:loop values='data:post.labels' var='label'>
+            <a expr:href='data:label.url' rel='tag'><data:label.name/></a><b:if cond='data:label.isLast != &quot;true&quot;'>,</b:if>
+          </b:loop>
+        </b:if>
       </span> 
+      <span class='post-timestamp'>
+          <b:if cond='data:top.showTimestamp'>
+            <data:top.timestampLabel/>
+          <b:if cond='data:post.url'>
+            <abbr class='published' expr:title='data:post.timestampISO8601'><data:post.timestamp/></abbr>
+          </b:if>
+          </b:if>
+      </span>
     </div>
 
     </div>
 
-    <b:if cond='data:blog.pageType == &quot;item&quot;'>
-    <div class='post-body entry-content'>
+    <div class='post-body entry-content' expr:id='&quot;post-body-&quot; + data:post.id' expr:itemprop='(data:blog.metaDescription ? &quot;&quot; : &quot;description &quot;) + &quot;articleBody&quot;'>
       <data:post.body/>
       <div style='clear: both;'/> <!-- clear for photos floats -->
     </div>
+
+  <b:if cond='data:blog.pageType == &quot;index&quot;'>
     <b:if cond='data:post.hasJumpLink'>
       <div class='jump-link'>
         <a expr:href='data:post.url + &quot;#more&quot;' expr:title='data:post.title'><data:post.jumpText/></a>
       </div>
     </b:if>
+  </b:if>
 
     <div class='post-footer'>
-    <div class='post-footer-line post-footer-line-1'><span class='post-author vcard'>
-        <b:if cond='data:top.showAuthor'>
-          <data:top.authorLabel/>
-          <span class='fn'><data:post.author/></span>
-        </b:if>
-      </span> <span class='post-timestamp'>
-        <b:if cond='data:top.showTimestamp'>
-          <data:top.timestampLabel/>
-        <b:if cond='data:post.url'>
-          <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'><abbr class='published' expr:title='data:post.timestampISO8601'><data:post.timestamp/></abbr></a>
-        </b:if>
-        </b:if>
-      </span> <span class='post-icons'>
+    <div class='post-footer-line post-footer-line-1'>
+    <span class='post-icons'>
         <!-- email post links -->
         <b:if cond='data:post.emailPostUrl'>
           <span class='item-action'>
@@ -691,7 +714,7 @@
         </b:if>
       </span> </div>
     </div>
-   </b:if>
+
 
   </div>
 </b:includable>
