@@ -6,7 +6,11 @@
   <b:include data='blog' name='all-head-content'/>
   <title><data:blog.pageTitle/></title>
 
-    <b:skin><![CDATA[*/ ]]></b:skin>
+    <!-- Eliminar CSS de por defecto de Blogger -->
+    &lt;style type=&quot;text/css&quot;&gt; &lt;!-- /*<b:skin><![CDATA[*/]]></b:skin>
+
+  <style type='text/css'>
+  </style>
 
   </head>
 <body>
