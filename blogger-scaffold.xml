@@ -685,7 +685,7 @@
   </b:if>
 
     <div class='post-footer'>
-    <div class='post-footer-line post-footer-line-1'>
+      <div class='post-footer-line post-footer-line-1'>
     <span class='post-icons'>
         <!-- email post links -->
         <b:if cond='data:post.emailPostUrl'>
@@ -699,7 +699,17 @@
         <!-- quickedit pencil -->
         <b:include data='post' name='postQuickEdit'/>
       </span> </div>
-
+        <div class='post-footer-line post-footer-line-2'>
+      <span class='post-comment-link'>
+              <b:if cond='data:blog.pageType != &quot;item&quot;'>
+                <b:if cond='data:blog.pageType != &quot;static_page&quot;'>
+                  <b:if cond='data:post.allowComments'>
+                    <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'><b:if cond='data:post.numComments == 1'>1 <data:top.commentLabel/><b:else/><data:post.numComments/> <data:top.commentLabelPlural/></b:if></a>
+                  </b:if>
+                </b:if>
+              </b:if>
+          </span> 
+    </div>
     </div>
 
 
